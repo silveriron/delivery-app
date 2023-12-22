@@ -1,19 +1,24 @@
 plugins {
     id 'java'
+    id 'org.springframework.boot' version '3.2.1'
+    id 'io.spring.dependency-management' version '1.1.4'
 }
 
-group = 'org.example'
-version = '1.0-SNAPSHOT'
 
-repositories {
-    mavenCentral()
+allprojects {
+    group = 'org.example'
+    version = '1.0-SNAPSHOT'
+    sourceCompatibility = '17'
+
+    repositories {
+        mavenCentral()
+    }
 }
 
-dependencies {
-    testImplementation platform('org.junit:junit-bom:5.9.1')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+bootJar {
+    enabled = false
 }
 
-test {
-    useJUnitPlatform()
+jar {
+    enabled = false
 }
