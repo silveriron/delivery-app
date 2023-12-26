@@ -1,6 +1,7 @@
 package com.delivery.api.exception;
 
 import lombok.Data;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
@@ -22,6 +23,13 @@ public class ErrorResponse {
     public ErrorResponse(ErrorCode errorCode, String message) {
         this.status = errorCode.getStatus();
         this.code = errorCode.getCode();
+        this.message = message;
+        this.timestamp = LocalDateTime.now();
+    }
+
+    public ErrorResponse(String message) {
+        this.status = HttpStatus.INTERNAL_SERVER_ERROR.value();
+        this.code = "E000";
         this.message = message;
         this.timestamp = LocalDateTime.now();
     }
