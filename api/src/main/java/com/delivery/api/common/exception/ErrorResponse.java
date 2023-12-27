@@ -13,14 +13,14 @@ public class ErrorResponse {
     private final String code;
     private final LocalDateTime timestamp;
 
-    public ErrorResponse(ErrorCode errorCode) {
+    public ErrorResponse(ErrorCodeIfs errorCode) {
         this.status = errorCode.getStatus();
         this.code = errorCode.getCode();
         this.message = errorCode.getMessage();
         this.timestamp = LocalDateTime.now();
     }
 
-    public ErrorResponse(ErrorCode errorCode, String message) {
+    public ErrorResponse(ErrorCodeIfs errorCode, String message) {
         this.status = errorCode.getStatus();
         this.code = errorCode.getCode();
         this.message = message;
