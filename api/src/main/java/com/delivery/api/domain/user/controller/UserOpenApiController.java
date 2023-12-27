@@ -2,8 +2,10 @@ package com.delivery.api.domain.user.controller;
 
 import com.delivery.api.domain.user.application.UserBusiness;
 import com.delivery.api.domain.user.application.UserConverter;
+import com.delivery.api.domain.user.controller.dto.UserLoginRequest;
 import com.delivery.api.domain.user.controller.dto.UserRegisterRequest;
 import com.delivery.api.domain.user.controller.dto.UserResponse;
+import com.delivery.db.user.entity.UserEntity;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,19 @@ public class UserOpenApiController {
         var user = userConverter.toEntity(request);
         var registeredUser = userBusiness.register(user);
         var response = userConverter.toResponse(registeredUser);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserResponse> login(
+            @Valid
+            @RequestBody UserLoginRequest request
+            ) {
+
+        UserEntity user = userBusiness.login(request);
+
+        UserResponse response = userConverter.toResponse(user);
 
         return ResponseEntity.ok(response);
     }
