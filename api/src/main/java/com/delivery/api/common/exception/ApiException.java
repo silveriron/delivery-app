@@ -1,4 +1,4 @@
-package com.delivery.api.exception;
+package com.delivery.api.common.exception;
 
 import lombok.Getter;
 
