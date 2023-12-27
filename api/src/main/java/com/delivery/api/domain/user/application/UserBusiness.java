@@ -2,9 +2,9 @@ package com.delivery.api.domain.user.application;
 
 import com.delivery.api.common.annotation.Business;
 import com.delivery.api.common.exception.ApiException;
-import com.delivery.api.common.exception.ErrorCode;
+import com.delivery.api.common.exception.UserErrorCode;
 import com.delivery.api.domain.user.controller.dto.UserLoginRequest;
-import com.delivery.api.domain.user.domain.CustomUserDetails;
+import com.delivery.api.domain.user.model.CustomUserDetails;
 import com.delivery.db.user.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,24 +22,22 @@ public class UserBusiness {
 
 
     public UserEntity register(UserEntity user) {
-
         userService.findByEmail(user.getEmail())
                 .ifPresent(u -> {
-                    throw new ApiException(ErrorCode.ALREADY_EXIST_USER);
+                    throw new ApiException(UserErrorCode.ALREADY_EXIST_USER);
                 });
-
         passwordEncoded(user);
-
         return userService.register(user);
     }
 
     public UserEntity login(UserLoginRequest request) {
-        var authentication = authenticationManager.authenticate(UsernamePasswordAuthenticationToken.unauthenticated(request.getEmail(), request.getPassword()));
-
+        var authentication = authenticationManager.authenticate(
+            UsernamePasswordAuthenticationToken.unauthenticated(
+                request.getEmail(), request.getPassword()
+            )
+        );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-
         return userDetails.getUser();
     }
 

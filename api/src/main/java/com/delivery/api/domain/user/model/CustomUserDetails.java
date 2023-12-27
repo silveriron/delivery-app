@@ -1,4 +1,4 @@
-package com.delivery.api.domain.user.domain;
+package com.delivery.api.domain.user.model;
 
 import com.delivery.db.user.entity.UserEntity;
 import lombok.AllArgsConstructor;

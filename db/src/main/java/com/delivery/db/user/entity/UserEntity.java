@@ -7,6 +7,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
@@ -17,10 +18,13 @@ public class UserEntity extends BaseEntity {
 
     @Column(nullable = false, unique = true, length = 100)
     private String email;
+    @Setter
     @Column(nullable = false, unique = true, length = 100)
     private String name;
+    @Setter
     @Column(nullable = false, length = 200)
     private String password;
+    @Setter
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole role;
@@ -33,18 +37,6 @@ public class UserEntity extends BaseEntity {
         this.password = password;
         this.role = UserRole.USER;
         this.birthDay = birthDay;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setRole(UserRole role) {
-        this.role = role;
     }
 }
 

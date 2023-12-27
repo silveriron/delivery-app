@@ -1,6 +1,6 @@
 package com.delivery.api.domain.user.application;
 
-import com.delivery.api.domain.user.domain.CustomUserDetails;
+import com.delivery.api.domain.user.model.CustomUserDetails;
 import com.delivery.db.user.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
