@@ -1,4 +1,4 @@
-package com.delivery.api.domain.user.application;
+package com.delivery.api.domain.user.converter;
 
 import com.delivery.api.common.annotation.Converter;
 import com.delivery.api.domain.user.controller.dto.UserRegisterRequest;

@@ -1,9 +1,8 @@
 package com.delivery.api.domain.user.controller;
 
-import com.delivery.api.domain.user.application.UserConverter;
 import com.delivery.api.domain.user.controller.dto.UserResponse;
+import com.delivery.api.domain.user.converter.UserConverter;
 import com.delivery.api.domain.user.model.CustomUserDetails;
-import com.delivery.db.user.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

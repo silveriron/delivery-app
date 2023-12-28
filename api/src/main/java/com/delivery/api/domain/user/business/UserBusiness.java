@@ -1,10 +1,14 @@
-package com.delivery.api.domain.user.application;
+package com.delivery.api.domain.user.business;
 
 import com.delivery.api.common.annotation.Business;
 import com.delivery.api.common.exception.ApiException;
 import com.delivery.api.common.exception.UserErrorCode;
 import com.delivery.api.domain.user.controller.dto.UserLoginRequest;
+import com.delivery.api.domain.user.controller.dto.UserRegisterRequest;
+import com.delivery.api.domain.user.controller.dto.UserResponse;
+import com.delivery.api.domain.user.converter.UserConverter;
 import com.delivery.api.domain.user.model.CustomUserDetails;
+import com.delivery.api.domain.user.service.UserService;
 import com.delivery.db.user.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,20 +21,26 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class UserBusiness {
 
     private final UserService userService;
+    private final UserConverter userConverter;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
 
-    public UserEntity register(UserEntity user) {
+    public UserResponse register(UserRegisterRequest request) {
+
+        UserEntity user = userConverter.toEntity(request);
+
         userService.findByEmail(user.getEmail())
                 .ifPresent(u -> {
                     throw new ApiException(UserErrorCode.ALREADY_EXIST_USER);
                 });
         passwordEncoded(user);
-        return userService.register(user);
+        var savedUser = userService.register(user);
+
+        return userConverter.toResponse(savedUser);
     }
 
-    public UserEntity login(UserLoginRequest request) {
+    public UserResponse login(UserLoginRequest request) {
         var authentication = authenticationManager.authenticate(
             UsernamePasswordAuthenticationToken.unauthenticated(
                 request.getEmail(), request.getPassword()
@@ -38,7 +48,9 @@ public class UserBusiness {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        return userDetails.getUser();
+        var user = userDetails.getUser();
+
+        return userConverter.toResponse(user);
     }
 
     private void passwordEncoded(UserEntity user) {

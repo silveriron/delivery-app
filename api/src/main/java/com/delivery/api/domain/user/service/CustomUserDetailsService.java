@@ -1,4 +1,4 @@
-package com.delivery.api.domain.user.application;
+package com.delivery.api.domain.user.service;
 
 import com.delivery.api.domain.user.model.CustomUserDetails;
 import com.delivery.db.user.entity.UserEntity;

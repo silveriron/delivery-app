@@ -1,6 +1,6 @@
 package com.delivery.api.common.config.security;
 
-import com.delivery.api.domain.user.application.CustomUserDetailsService;
+import com.delivery.api.domain.user.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

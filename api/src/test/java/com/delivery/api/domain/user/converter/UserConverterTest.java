@@ -1,18 +1,16 @@
-package com.delivery.api.domain.user.application;
+package com.delivery.api.domain.user.converter;
 
+import com.delivery.api.base.MockTestBase;
 import com.delivery.api.domain.user.controller.dto.UserRegisterRequest;
 import com.delivery.db.user.entity.UserEntity;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
-@ExtendWith(MockitoExtension.class)
-class UserConverterTest {
+class UserConverterTest extends MockTestBase {
 
   @InjectMocks
   private UserConverter userConverter;

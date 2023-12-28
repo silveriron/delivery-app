@@ -1,12 +1,11 @@
-package com.delivery.api.domain.user.application;
+package com.delivery.api.domain.user.service;
 
+import com.delivery.api.base.MockTestBase;
 import com.delivery.db.user.entity.UserEntity;
 import com.delivery.db.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -14,8 +13,7 @@ import java.util.Optional;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
-public class UserServiceTest {
+public class UserServiceTest extends MockTestBase {
 
   @Mock
   private UserRepository userRepository;
