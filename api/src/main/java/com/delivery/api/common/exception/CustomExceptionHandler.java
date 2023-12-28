@@ -1,5 +1,7 @@
 package com.delivery.api.common.exception;
 
+import com.delivery.api.common.error.ErrorCode;
+import com.delivery.api.common.error.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

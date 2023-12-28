@@ -1,4 +1,4 @@
-package com.delivery.api.common.exception;
+package com.delivery.api.common.error;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;
