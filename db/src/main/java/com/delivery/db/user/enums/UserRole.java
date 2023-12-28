@@ -1,4 +1,4 @@
-package com.delivery.db.user.entity;
+package com.delivery.db.user.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

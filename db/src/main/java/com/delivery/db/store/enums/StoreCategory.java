@@ -1,4 +1,4 @@
-package com.delivery.db.store.model;
+package com.delivery.db.store.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
