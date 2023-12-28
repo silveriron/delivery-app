@@ -28,7 +28,6 @@ class StoreServiceTest extends MockTestBase {
             .address(address)
             .phone(phone)
             .category(category)
-            .status(status)
             .build();
     @Mock
     private StoreRepository storeRepository;
