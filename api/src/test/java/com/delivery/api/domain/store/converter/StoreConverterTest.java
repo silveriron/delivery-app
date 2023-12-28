@@ -5,10 +5,14 @@ import com.delivery.api.domain.store.controller.dto.StoreResponse;
 import com.delivery.db.store.entity.StoreEntity;
 import com.delivery.db.store.model.StoreCategory;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
 class StoreConverterTest {
+
+    @InjectMocks
+    private StoreConverter storeConverter;
 
     @Test
     void StoreRegisterRequest를_StoreEntity로_변환한다() {
@@ -21,7 +25,7 @@ class StoreConverterTest {
                 .category(StoreCategory.CHINESE)
                 .build();
         // when
-        StoreEntity storeEntity = StoreConverter.toEntity(storeRegisterRequest);
+        StoreEntity storeEntity = storeConverter.toEntity(storeRegisterRequest);
         // then
 
         then(storeRegisterRequest.getName()).isEqualTo(storeEntity.getName());
@@ -42,7 +46,7 @@ class StoreConverterTest {
                 .category(StoreCategory.CHINESE)
                 .build();
         // when
-        StoreResponse storeResponse = StoreConverter.toResponse(storeEntity);
+        StoreResponse storeResponse = storeConverter.toResponse(storeEntity);
         // then
 
         then(storeResponse.getId()).isEqualTo(storeEntity.getId());

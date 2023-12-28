@@ -1,11 +1,13 @@
 package com.delivery.api.domain.store.converter;
 
+import com.delivery.api.common.annotation.Converter;
 import com.delivery.api.domain.store.controller.dto.StoreRegisterRequest;
 import com.delivery.api.domain.store.controller.dto.StoreResponse;
 import com.delivery.db.store.entity.StoreEntity;
 
+@Converter
 public class StoreConverter {
-    public static StoreEntity toEntity(StoreRegisterRequest storeRegisterRequest) {
+    public StoreEntity toEntity(StoreRegisterRequest storeRegisterRequest) {
         return StoreEntity.builder()
                 .name(storeRegisterRequest.getName())
                 .description(storeRegisterRequest.getDescription())
@@ -15,7 +17,7 @@ public class StoreConverter {
                 .build();
     }
 
-    public static StoreResponse toResponse(StoreEntity storeEntity) {
+    public StoreResponse toResponse(StoreEntity storeEntity) {
         return StoreResponse.builder()
                 .id(storeEntity.getId())
                 .name(storeEntity.getName())
