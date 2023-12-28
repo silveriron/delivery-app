@@ -11,7 +11,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Entity(name = "users")
+@Entity(name = "user")
 @NoArgsConstructor
 @Getter
 public class UserEntity extends BaseEntity {
