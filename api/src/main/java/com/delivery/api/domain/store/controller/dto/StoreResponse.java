@@ -1,7 +1,7 @@
 package com.delivery.api.domain.store.controller.dto;
 
-import com.delivery.db.store.model.StoreCategory;
-import com.delivery.db.store.model.StoreStatus;
+import com.delivery.db.store.enums.StoreCategory;
+import com.delivery.db.store.enums.StoreStatus;
 import lombok.Builder;
 import lombok.Data;
 

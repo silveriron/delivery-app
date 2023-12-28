@@ -2,14 +2,15 @@ package com.delivery.api.domain.store.service;
 
 import com.delivery.api.base.MockTestBase;
 import com.delivery.db.store.entity.StoreEntity;
-import com.delivery.db.store.model.StoreCategory;
-import com.delivery.db.store.model.StoreStatus;
+import com.delivery.db.store.enums.StoreCategory;
+import com.delivery.db.store.enums.StoreStatus;
 import com.delivery.db.store.repository.StoreRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.Mockito.when;
@@ -80,6 +81,24 @@ class StoreServiceTest extends MockTestBase {
         then(storeEntities.get(0).getPhone()).isEqualTo(phone);
         then(storeEntities.get(0).getCategory()).isEqualTo(category);
         then(storeEntities.get(0).getStatus()).isEqualTo(status);
+    }
+
+    @Test
+    void 가게이름으로_정상등록_상태인_가게를_조회한다() {
+        // given
+        when(storeRepository.findByNameAndStatus(name, StoreStatus.REGISTERED)).thenReturn(Optional.ofNullable(storeEntity));
+
+        // when
+        var storeEntity = storeService.getStoreByNameAndStatus(name, StoreStatus.REGISTERED);
+
+        // then
+        then(storeEntity).isPresent();
+        then(storeEntity.get().getName()).isEqualTo(name);
+        then(storeEntity.get().getDescription()).isEqualTo(description);
+        then(storeEntity.get().getAddress()).isEqualTo(address);
+        then(storeEntity.get().getPhone()).isEqualTo(phone);
+        then(storeEntity.get().getCategory()).isEqualTo(category);
+        then(storeEntity.get().getStatus()).isEqualTo(status);
     }
 
 }

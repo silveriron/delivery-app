@@ -3,7 +3,7 @@ package com.delivery.api.domain.store.converter;
 import com.delivery.api.domain.store.controller.dto.StoreRegisterRequest;
 import com.delivery.api.domain.store.controller.dto.StoreResponse;
 import com.delivery.db.store.entity.StoreEntity;
-import com.delivery.db.store.model.StoreCategory;
+import com.delivery.db.store.enums.StoreCategory;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 

@@ -1,21 +1,25 @@
 package com.delivery.api.domain.store.business;
 
 import com.delivery.api.base.MockTestBase;
+import com.delivery.api.common.error.StoreErrorCode;
+import com.delivery.api.common.exception.ApiException;
 import com.delivery.api.domain.store.controller.dto.StoreRegisterRequest;
 import com.delivery.api.domain.store.controller.dto.StoreResponse;
 import com.delivery.api.domain.store.converter.StoreConverter;
 import com.delivery.api.domain.store.service.StoreService;
 import com.delivery.db.store.entity.StoreEntity;
-import com.delivery.db.store.model.StoreCategory;
-import com.delivery.db.store.model.StoreStatus;
+import com.delivery.db.store.enums.StoreCategory;
+import com.delivery.db.store.enums.StoreStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 import static org.mockito.Mockito.when;
 
 class StoreBusinessTest extends MockTestBase {
@@ -139,6 +143,45 @@ class StoreBusinessTest extends MockTestBase {
         then(storeResponses.get(0).getName()).isEqualTo(chineseStore.getName());
         then(storeResponses.get(1).getName()).isEqualTo(japaneseStore.getName());
         then(storeResponses.get(2).getName()).isEqualTo(koreanStore.getName());
+    }
+
+    @Test
+    void 카테고리별_가게_목록을_StoreResponse_리스트로_반환한다() {
+        // given
+        when(storeService.getStoresByCategoryAndStatus(StoreCategory.CHINESE, StoreStatus.REGISTERED)).thenReturn(List.of(chineseStore));
+        when(storeConverter.toResponse(chineseStore)).thenReturn(chineseResponse);
+
+        // when
+        List<StoreResponse> storeResponses = storeBusiness.getRegisteredStoresByCategory(StoreCategory.CHINESE);
+
+        // then
+        then(storeResponses).hasSize(1);
+        then(storeResponses.get(0).getName()).isEqualTo(chineseStore.getName());
+    }
+
+    @Test
+    void 가게이름으로_가게를_조회하고_StoreReponse를_반환한다() {
+        // given
+        when(storeService.getStoreByNameAndStatus("중국집", StoreStatus.REGISTERED)).thenReturn(Optional.of(chineseStore));
+        when(storeConverter.toResponse(chineseStore)).thenReturn(chineseResponse);
+
+        // when
+        StoreResponse storeResponse = storeBusiness.getStoreByName("중국집");
+
+        // then
+        then(storeResponse.getName()).isEqualTo(chineseStore.getName());
+    }
+
+    @Test
+    void 가게이름으로_가게를_조회하고_가게가_존재하지_않으면_예외를_발생시킨다() {
+        // given
+        when(storeService.getStoreByNameAndStatus("중국집", StoreStatus.REGISTERED)).thenReturn(Optional.empty());
+
+        // when
+        // then
+        thenThrownBy(() -> storeBusiness.getStoreByName("중국집"))
+                .isInstanceOf(ApiException.class)
+                .hasMessage(StoreErrorCode.NOT_FOUND_STORE.getMessage());
     }
 
 }

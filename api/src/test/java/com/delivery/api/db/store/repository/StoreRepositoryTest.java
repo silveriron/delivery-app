@@ -1,8 +1,8 @@
 package com.delivery.api.db.store.repository;
 
 import com.delivery.db.store.entity.StoreEntity;
-import com.delivery.db.store.model.StoreCategory;
-import com.delivery.db.store.model.StoreStatus;
+import com.delivery.db.store.enums.StoreCategory;
+import com.delivery.db.store.enums.StoreStatus;
 import com.delivery.db.store.repository.StoreRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;

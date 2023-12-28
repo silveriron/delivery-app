@@ -1,6 +1,6 @@
 package com.delivery.api.domain.store.controller.dto;
 
-import com.delivery.db.store.model.StoreCategory;
+import com.delivery.db.store.enums.StoreCategory;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;

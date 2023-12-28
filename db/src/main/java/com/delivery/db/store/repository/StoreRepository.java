@@ -1,8 +1,8 @@
 package com.delivery.db.store.repository;
 
 import com.delivery.db.store.entity.StoreEntity;
-import com.delivery.db.store.model.StoreCategory;
-import com.delivery.db.store.model.StoreStatus;
+import com.delivery.db.store.enums.StoreCategory;
+import com.delivery.db.store.enums.StoreStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

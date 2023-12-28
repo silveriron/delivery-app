@@ -6,7 +6,7 @@ import com.delivery.api.domain.user.controller.dto.UserResponse;
 import com.delivery.api.domain.user.converter.UserConverter;
 import com.delivery.api.domain.user.service.UserService;
 import com.delivery.db.user.entity.UserEntity;
-import com.delivery.db.user.entity.UserRole;
+import com.delivery.db.user.enums.UserRole;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
