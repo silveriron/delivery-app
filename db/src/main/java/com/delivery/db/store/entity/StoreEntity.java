@@ -1,21 +1,19 @@
 package com.delivery.db.store.entity;
 
 import com.delivery.db.base.BaseEntity;
-import com.delivery.db.store.model.StoreCategory;
-import com.delivery.db.store.model.StoreStatus;
+import com.delivery.db.store.enums.StoreCategory;
+import com.delivery.db.store.enums.StoreStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity(name = "store")
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class StoreEntity extends BaseEntity {
 
     @Column(nullable = false, length = 50)

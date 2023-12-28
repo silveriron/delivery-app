@@ -1,10 +1,12 @@
 package com.delivery.db.user.entity;
 
 import com.delivery.db.base.BaseEntity;
+import com.delivery.db.user.enums.UserRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +16,7 @@ import java.time.LocalDate;
 @Entity(name = "users")
 @NoArgsConstructor
 @Getter
+@EqualsAndHashCode(callSuper = true)
 public class UserEntity extends BaseEntity {
 
     @Column(nullable = false, unique = true, length = 100)
