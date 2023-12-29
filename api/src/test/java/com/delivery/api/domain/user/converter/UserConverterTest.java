@@ -51,5 +51,5 @@ class UserConverterTest extends MockTestBase {
     then(response.getBirthDay()).isEqualTo(user.getBirthDay());
     then(response.getCreatedAt()).isEqualTo(user.getCreatedAt());
     then(response.getUpdatedAt()).isEqualTo(user.getUpdatedAt());
-    }
+  }
 }

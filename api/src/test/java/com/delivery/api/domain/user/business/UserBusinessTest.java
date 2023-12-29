@@ -2,9 +2,11 @@ package com.delivery.api.domain.user.business;
 
 import com.delivery.api.base.MockTestBase;
 import com.delivery.api.domain.token.service.TokenServiceIfs;
+import com.delivery.api.domain.user.controller.dto.UserLoginRequest;
 import com.delivery.api.domain.user.controller.dto.UserRegisterRequest;
 import com.delivery.api.domain.user.controller.dto.UserResponse;
 import com.delivery.api.domain.user.converter.UserConverter;
+import com.delivery.api.domain.user.model.CustomUserDetails;
 import com.delivery.api.domain.user.service.UserService;
 import com.delivery.db.user.entity.UserEntity;
 import com.delivery.db.user.enums.UserRole;
@@ -12,6 +14,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
@@ -39,6 +44,8 @@ class UserBusinessTest extends MockTestBase {
     String name = "test";
     @Mock
     private TokenServiceIfs tokenService;
+    @Mock
+    private AuthenticationManager authenticationManager;
     private UserRegisterRequest request;
     private UserEntity user;
     private UserResponse userResponse;
@@ -104,5 +111,51 @@ class UserBusinessTest extends MockTestBase {
         when(userService.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
         // when & then
         thenException().isThrownBy(() -> userBusiness.register(request));
+    }
+
+    @Test
+    void 로그인이_완료되면_사용자_응답으로_변환한다() {
+        // given
+        UserLoginRequest request = UserLoginRequest.builder()
+                .email(email)
+                .password(password)
+                .build();
+
+        CustomUserDetails userDetails = new CustomUserDetails(user);
+
+        when(authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(email, password)
+        )).thenReturn(new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()));
+        when(tokenService.generateAccessToken(user.getId())).thenReturn("accessToken");
+        when(tokenService.generateRefreshToken(user.getId())).thenReturn("refreshToken");
+        when(userConverter.toResponse(user, "accessToken", "refreshToken")).thenReturn(userResponse);
+
+        // when
+        var loginResponse = userBusiness.login(request);
+
+        //then
+        then(loginResponse).isEqualTo(userResponse);
+        then(loginResponse.getEmail()).isEqualTo(email);
+        then(loginResponse.getName()).isEqualTo(name);
+        then(loginResponse.getBirthDay()).isEqualTo(birthDay);
+        then(loginResponse.getRole()).isEqualTo(UserRole.USER.name());
+        then(loginResponse.getAccessToken()).isEqualTo("accessToken");
+        then(loginResponse.getRefreshToken()).isEqualTo("refreshToken");
+    }
+
+    @Test
+    void 존재하지_않는_사용자_정보로_로그인하면_에러가_발생한다() {
+        // given
+        UserLoginRequest request = UserLoginRequest.builder()
+                .email(email)
+                .password(password)
+                .build();
+
+        when(authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(email, password)
+        )).thenThrow(new BadCredentialsException("BadCredentialsException"));
+
+        // when & then
+        thenException().isThrownBy(() -> userBusiness.login(request));
     }
 }
