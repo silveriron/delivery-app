@@ -2,6 +2,7 @@ package com.delivery.api.domain.store.controller.dto;
 
 import com.delivery.db.store.enums.StoreCategory;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -17,6 +18,6 @@ public class StoreRegisterRequest {
     private String phone;
     @NotBlank
     private String address;
-    @NotBlank
+    @NotNull
     private StoreCategory category;
 }

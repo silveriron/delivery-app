@@ -1,8 +1,6 @@
 package com.delivery.api.domain.store.business;
 
 import com.delivery.api.base.MockTestBase;
-import com.delivery.api.common.error.StoreErrorCode;
-import com.delivery.api.common.exception.ApiException;
 import com.delivery.api.domain.store.controller.dto.StoreRegisterRequest;
 import com.delivery.api.domain.store.controller.dto.StoreResponse;
 import com.delivery.api.domain.store.converter.StoreConverter;
@@ -19,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 import static org.mockito.Mockito.when;
 
 class StoreBusinessTest extends MockTestBase {
@@ -166,22 +163,23 @@ class StoreBusinessTest extends MockTestBase {
         when(storeConverter.toResponse(chineseStore)).thenReturn(chineseResponse);
 
         // when
-        StoreResponse storeResponse = storeBusiness.getStoreByName("중국집");
+        List<StoreResponse> storeResponse = storeBusiness.getStoreByName("중국집");
 
         // then
-        then(storeResponse.getName()).isEqualTo(chineseStore.getName());
+        then(storeResponse).hasSize(1);
+        then(storeResponse.get(0).getName()).isEqualTo(chineseStore.getName());
     }
 
     @Test
-    void 가게이름으로_가게를_조회하고_가게가_존재하지_않으면_예외를_발생시킨다() {
+    void 가게이름으로_가게를_조회하고_가게가_존재하지_않으면_빈_리스트를_반환한다() {
         // given
         when(storeService.getStoreByNameAndStatus("중국집", StoreStatus.REGISTERED)).thenReturn(Optional.empty());
 
         // when
+        List<StoreResponse> stores = storeBusiness.getStoreByName("중국집");
+
         // then
-        thenThrownBy(() -> storeBusiness.getStoreByName("중국집"))
-                .isInstanceOf(ApiException.class)
-                .hasMessage(StoreErrorCode.NOT_FOUND_STORE.getMessage());
+        then(stores).isEmpty();
     }
 
 }

@@ -1,12 +1,13 @@
 package com.delivery.api.domain.store.controller;
 
 import com.delivery.api.domain.store.business.StoreBusiness;
-import com.delivery.api.domain.store.controller.dto.StoreRegisterRequest;
 import com.delivery.api.domain.store.controller.dto.StoreResponse;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -17,17 +18,6 @@ public class StoreOpenApiController {
 
     private final StoreBusiness storeBusiness;
 
-    @PostMapping
-    public ResponseEntity<StoreResponse> register(
-            @Valid
-            @RequestBody StoreRegisterRequest request
-    ) {
-
-        var store = storeBusiness.register(request);
-
-        return ResponseEntity.ok(store);
-    }
-
     @GetMapping
     public ResponseEntity<List<StoreResponse>> getStores() {
 
@@ -35,4 +25,13 @@ public class StoreOpenApiController {
 
         return ResponseEntity.ok(stores);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<StoreResponse>> getStoresByKeyword(@RequestParam("keyword") String keyword) {
+
+        var stores = storeBusiness.getStoreByName(keyword);
+
+        return ResponseEntity.ok(stores);
+    }
+
 }

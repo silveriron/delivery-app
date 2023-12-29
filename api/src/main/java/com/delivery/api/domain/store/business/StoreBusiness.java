@@ -1,8 +1,6 @@
 package com.delivery.api.domain.store.business;
 
 import com.delivery.api.common.annotation.Business;
-import com.delivery.api.common.error.StoreErrorCode;
-import com.delivery.api.common.exception.ApiException;
 import com.delivery.api.domain.store.controller.dto.StoreRegisterRequest;
 import com.delivery.api.domain.store.controller.dto.StoreResponse;
 import com.delivery.api.domain.store.converter.StoreConverter;
@@ -13,6 +11,7 @@ import com.delivery.db.store.enums.StoreStatus;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 @Business
 @RequiredArgsConstructor
@@ -34,11 +33,10 @@ public class StoreBusiness {
         return stores.stream().map(storeConverter::toResponse).toList();
     }
 
-    public StoreResponse getStoreByName(String name) {
-        StoreEntity store = storeService.getStoreByNameAndStatus(name, StoreStatus.REGISTERED)
-                .orElseThrow(() -> new ApiException(StoreErrorCode.NOT_FOUND_STORE));
+    public List<StoreResponse> getStoreByName(String name) {
+        Optional<StoreEntity> store = storeService.getStoreByNameAndStatus(name, StoreStatus.REGISTERED);
 
-        return storeConverter.toResponse(store);
+        return store.map(storeEntity -> List.of(storeConverter.toResponse(storeEntity))).orElseGet(List::of);
     }
 
     public List<StoreResponse> getRegisteredStoresByCategory(StoreCategory storeCategory) {
