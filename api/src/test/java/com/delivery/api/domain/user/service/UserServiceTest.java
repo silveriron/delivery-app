@@ -22,6 +22,20 @@ public class UserServiceTest extends MockTestBase {
   private UserService userService;
 
   @Test
+  void 아이디가_주어지면_사용자_정보를_찾는다() {
+        // given
+        UserEntity user = new UserEntity("test@test.com", "test", "test", LocalDate.now());
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+
+        // when
+        Optional<UserEntity> foundUser = userService.findById(user.getId());
+
+        // then
+        then(foundUser).isNotEmpty();
+        then(foundUser.get()).isEqualTo(user);
+  }
+
+  @Test
   void 사용자_정보가_주어지면_사용자_정보를_저장한다() {
     // given
     LocalDate birthDay = LocalDate.now();

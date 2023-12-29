@@ -1,0 +1,36 @@
+###
+POST http://localhost:8080/open-api/users/register
+Content-Type: application/json
+
+{
+  "email": "test7@test.com",
+  "name": "test7",
+    "password": "qwer1234",
+  "birthDay": "2002-01-02"
+}
+
+###
+POST http://localhost:8080/open-api/users/login
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+    "password": "qwer1234"
+}
+
+###
+GET http://localhost:8080/api/users/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.sImV4cCI6MTcwMzkwMDYyOH0._VyDkQRd0NFX7PA3_LJwsP85vGIHty6w5U49UTVEASQ
+
+###
+POST http://localhost:8080/api/stores
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTcwMzkwMDYyOH0._VyDkQRd0NFX7PA3_LJwsP85vGIHty6w5U49UTVEASQ
+
+{
+    "name": "명태마을",
+    "description": "명태조림 전문점",
+    "address": "서울시 강남구",
+    "phone": "000-0000-0000",
+    "category": "KOREAN"
+}

@@ -3,6 +3,7 @@ package com.delivery.api.domain.user.business;
 import com.delivery.api.common.annotation.Business;
 import com.delivery.api.common.error.UserErrorCode;
 import com.delivery.api.common.exception.ApiException;
+import com.delivery.api.domain.token.service.TokenServiceIfs;
 import com.delivery.api.domain.user.controller.dto.UserLoginRequest;
 import com.delivery.api.domain.user.controller.dto.UserRegisterRequest;
 import com.delivery.api.domain.user.controller.dto.UserResponse;
@@ -22,6 +23,7 @@ public class UserBusiness {
 
     private final UserService userService;
     private final UserConverter userConverter;
+    private final TokenServiceIfs tokenService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
@@ -37,7 +39,10 @@ public class UserBusiness {
         passwordEncoded(user);
         var savedUser = userService.register(user);
 
-        return userConverter.toResponse(savedUser);
+        var accessToken = tokenService.generateAccessToken(savedUser.getId());
+        var refreshToken = tokenService.generateRefreshToken(savedUser.getId());
+
+        return userConverter.toResponse(savedUser, accessToken, refreshToken);
     }
 
     public UserResponse login(UserLoginRequest request) {
@@ -50,7 +55,10 @@ public class UserBusiness {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         var user = userDetails.getUser();
 
-        return userConverter.toResponse(user);
+        var accessToken =tokenService.generateAccessToken(user.getId());
+        var refreshToken = tokenService.generateRefreshToken(user.getId());
+
+        return userConverter.toResponse(user, accessToken, refreshToken);
     }
 
     private void passwordEncoded(UserEntity user) {

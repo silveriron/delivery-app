@@ -13,6 +13,10 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    public Optional<UserEntity> findById(Long id) {
+        return userRepository.findById(id);
+    }
+
     public UserEntity register(UserEntity user) {
         return userRepository.save(user);
     }

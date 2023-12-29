@@ -11,6 +11,20 @@ public class UserConverter {
         return new UserEntity(request.getEmail(), request.getName(), request.getPassword(), request.getBirthDay());
     }
 
+    public UserResponse toResponse(UserEntity registeredUser, String accessToken, String refreshToken) {
+        return UserResponse.builder()
+                .email(registeredUser.getEmail())
+                .name(registeredUser.getName())
+                .role(registeredUser.getRole().name())
+                .id(registeredUser.getId())
+                .birthDay(registeredUser.getBirthDay())
+                .createdAt(registeredUser.getCreatedAt())
+                .updatedAt(registeredUser.getUpdatedAt())
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
+
     public UserResponse toResponse(UserEntity registeredUser) {
         return UserResponse.builder()
                 .email(registeredUser.getEmail())

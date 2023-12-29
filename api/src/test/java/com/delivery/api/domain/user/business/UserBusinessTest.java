@@ -1,12 +1,14 @@
 package com.delivery.api.domain.user.business;
 
 import com.delivery.api.base.MockTestBase;
+import com.delivery.api.domain.token.service.TokenServiceIfs;
 import com.delivery.api.domain.user.controller.dto.UserRegisterRequest;
 import com.delivery.api.domain.user.controller.dto.UserResponse;
 import com.delivery.api.domain.user.converter.UserConverter;
 import com.delivery.api.domain.user.service.UserService;
 import com.delivery.db.user.entity.UserEntity;
 import com.delivery.db.user.enums.UserRole;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -22,48 +24,60 @@ import static org.mockito.Mockito.when;
 
 class UserBusinessTest extends MockTestBase {
 
-    LocalDate birthDay = LocalDate.now();
-    String email = "test@test.com";
-    String password = "test";
-    String name = "test";
+
     @Mock
     private UserService userService;
+    LocalDate birthDay = LocalDate.now();
     @Mock
     private PasswordEncoder passwordEncoder;
     @Mock
     private UserConverter userConverter;
     @InjectMocks
     private UserBusiness userBusiness;
+    String email = "test@test.com";
+    String password = "test";
+    String name = "test";
+    @Mock
+    private TokenServiceIfs tokenService;
+    private UserRegisterRequest request;
+    private UserEntity user;
+    private UserResponse userResponse;
 
-    UserBusinessTest() {
-    }
+    @BeforeEach
+    void setUp() {
 
-    @Test
-    void 사용자_정보가_주어지면_사용자_정보를_저장한다() {
-        // given
 
-        UserRegisterRequest request = UserRegisterRequest.builder()
+
+        request = UserRegisterRequest.builder()
                 .email(email)
                 .password(password)
                 .name(name)
                 .birthDay(birthDay)
                 .build();
-        UserEntity user = new UserEntity(email, name, password, birthDay);
+        user = new UserEntity(email, name, password, birthDay);
 
-        UserResponse userResponse = UserResponse.builder()
+        userResponse = UserResponse.builder()
                 .email(email)
                 .name(name)
                 .birthDay(birthDay)
                 .role(UserRole.USER.name())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
+                .accessToken("accessToken")
+                .refreshToken("refreshToken")
                 .build();
+    }
 
+    @Test
+    void 사용자_정보가_주어지면_사용자_정보를_저장한다() {
+        // given
         when(userService.findByEmail(user.getEmail())).thenReturn(Optional.empty());
         when(passwordEncoder.encode(user.getPassword())).thenReturn("encodedPassword");
         when(userService.register(user)).thenReturn(user);
+        when(tokenService.generateAccessToken(user.getId())).thenReturn("accessToken");
+        when(tokenService.generateRefreshToken(user.getId())).thenReturn("refreshToken");
         when(userConverter.toEntity(request)).thenReturn(user);
-        when(userConverter.toResponse(user)).thenReturn(userResponse);
+        when(userConverter.toResponse(user, "accessToken", "refreshToken")).thenReturn(userResponse);
 
         // when
         UserResponse response = userBusiness.register(request);
