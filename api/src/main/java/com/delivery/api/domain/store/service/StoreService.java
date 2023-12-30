@@ -1,5 +1,7 @@
 package com.delivery.api.domain.store.service;
 
+import com.delivery.api.common.error.StoreErrorCode;
+import com.delivery.api.common.exception.ApiException;
 import com.delivery.db.store.entity.StoreEntity;
 import com.delivery.db.store.enums.StoreCategory;
 import com.delivery.db.store.enums.StoreStatus;
@@ -30,5 +32,9 @@ public class StoreService {
 
     public Optional<StoreEntity> getStoreByNameAndStatus(String name, StoreStatus storeStatus) {
         return storeRepository.findByNameAndStatus(name, storeStatus);
+    }
+
+    public StoreEntity getStoreById(Long storeId) {
+        return storeRepository.findByIdAndStatus(storeId, StoreStatus.REGISTERED).orElseThrow(()-> new ApiException(StoreErrorCode.NOT_FOUND_STORE));
     }
 }

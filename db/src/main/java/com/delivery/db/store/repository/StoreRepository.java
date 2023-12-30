@@ -16,4 +16,5 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Long> {
 
     List<StoreEntity> findAllByCategoryAndStatus(StoreCategory category, StoreStatus status);
 
+    Optional<StoreEntity> findByIdAndStatus(Long id, StoreStatus status);
 }

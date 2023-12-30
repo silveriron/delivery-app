@@ -2,6 +2,7 @@ package com.delivery.api.domain.store.controller;
 
 import com.delivery.api.domain.store.business.StoreBusiness;
 import com.delivery.api.domain.store.controller.dto.StoreResponse;
+import com.delivery.db.store.enums.StoreCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,14 @@ public class StoreOpenApiController {
     public ResponseEntity<List<StoreResponse>> getStores() {
 
         var stores = storeBusiness.getRegisteredStores();
+
+        return ResponseEntity.ok(stores);
+    }
+
+    @GetMapping("/category")
+    public ResponseEntity<List<StoreResponse>> getStoresByCategory(@RequestParam("category") StoreCategory category) {
+
+        var stores = storeBusiness.getRegisteredStoresByCategory(category);
 
         return ResponseEntity.ok(stores);
     }

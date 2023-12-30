@@ -1,6 +1,7 @@
 package com.delivery.api.domain.store.service;
 
 import com.delivery.api.base.MockTestBase;
+import com.delivery.api.common.exception.ApiException;
 import com.delivery.db.store.entity.StoreEntity;
 import com.delivery.db.store.enums.StoreCategory;
 import com.delivery.db.store.enums.StoreStatus;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 import static org.mockito.Mockito.when;
 
 class StoreServiceTest extends MockTestBase {
@@ -99,6 +101,35 @@ class StoreServiceTest extends MockTestBase {
         then(storeEntity.get().getPhone()).isEqualTo(phone);
         then(storeEntity.get().getCategory()).isEqualTo(category);
         then(storeEntity.get().getStatus()).isEqualTo(status);
+    }
+
+    @Test
+    void 가게_아이디로_정상등록_상태인_가게를_조회한다() {
+        // given
+        when(storeRepository.findByIdAndStatus(storeEntity.getId(), StoreStatus.REGISTERED)).thenReturn(Optional.ofNullable(storeEntity));
+
+        // when
+        var existStoreEntity = storeService.getStoreById(storeEntity.getId());
+
+        // then
+        then(existStoreEntity).isNotNull();
+        then(existStoreEntity.getName()).isEqualTo(name);
+        then(existStoreEntity.getDescription()).isEqualTo(description);
+        then(existStoreEntity.getAddress()).isEqualTo(address);
+        then(existStoreEntity.getPhone()).isEqualTo(phone);
+        then(existStoreEntity.getCategory()).isEqualTo(category);
+        then(existStoreEntity.getStatus()).isEqualTo(status);
+    }
+
+    @Test
+    void 등록되지_않은_가게_아이디로_요청하면_예외를_반환한다() {
+        // given
+        when(storeRepository.findByIdAndStatus(storeEntity.getId(), StoreStatus.REGISTERED)).thenReturn(Optional.empty());
+
+        // when & then
+        thenThrownBy(() -> storeService.getStoreById(storeEntity.getId()))
+                .isInstanceOf(ApiException.class)
+                .hasMessageContaining("가게를 찾을 수 없습니다.");
     }
 
 }

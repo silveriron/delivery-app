@@ -1,5 +1,6 @@
 package com.delivery.api.domain.store.converter;
 
+import com.delivery.api.base.MockTestBase;
 import com.delivery.api.domain.store.controller.dto.StoreRegisterRequest;
 import com.delivery.api.domain.store.controller.dto.StoreResponse;
 import com.delivery.db.store.entity.StoreEntity;
@@ -9,10 +10,14 @@ import org.mockito.InjectMocks;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
-class StoreConverterTest {
+class StoreConverterTest extends MockTestBase {
 
     @InjectMocks
     private StoreConverter storeConverter;
+
+    private StoreEntity storeEntity;
+
+
 
     @Test
     void StoreRegisterRequest를_StoreEntity로_변환한다() {
