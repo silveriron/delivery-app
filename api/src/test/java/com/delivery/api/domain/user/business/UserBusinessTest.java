@@ -78,7 +78,7 @@ class UserBusinessTest extends MockTestBase {
     @Test
     void 사용자_정보가_주어지면_사용자_정보를_저장한다() {
         // given
-        when(userService.findByEmail(user.getEmail())).thenReturn(Optional.empty());
+        when(userService.getByEmail(user.getEmail())).thenReturn(Optional.empty());
         when(passwordEncoder.encode(user.getPassword())).thenReturn("encodedPassword");
         when(userService.register(user)).thenReturn(user);
         when(tokenService.generateAccessToken(user.getId())).thenReturn("accessToken");
@@ -108,7 +108,7 @@ class UserBusinessTest extends MockTestBase {
                 .build();
         UserEntity user = new UserEntity(email, name, password, birthDay);
         when(userConverter.toEntity(request)).thenReturn(user);
-        when(userService.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        when(userService.getByEmail(user.getEmail())).thenReturn(Optional.of(user));
         // when & then
         thenException().isThrownBy(() -> userBusiness.register(request));
     }

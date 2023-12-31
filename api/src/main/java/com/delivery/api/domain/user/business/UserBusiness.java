@@ -32,7 +32,7 @@ public class UserBusiness {
 
         UserEntity user = userConverter.toEntity(request);
 
-        userService.findByEmail(user.getEmail())
+        userService.getByEmail(user.getEmail())
                 .ifPresent(u -> {
                     throw new ApiException(UserErrorCode.ALREADY_EXIST_USER);
                 });

@@ -13,7 +13,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public Optional<UserEntity> findById(Long id) {
+    public Optional<UserEntity> getByUserId(Long id) {
         return userRepository.findById(id);
     }
 
@@ -21,7 +21,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Optional<UserEntity> findByEmail(String email) {
+    public Optional<UserEntity> getByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 }

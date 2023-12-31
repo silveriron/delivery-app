@@ -28,7 +28,7 @@ public class UserServiceTest extends MockTestBase {
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
         // when
-        Optional<UserEntity> foundUser = userService.findById(user.getId());
+        Optional<UserEntity> foundUser = userService.getByUserId(user.getId());
 
         // then
         then(foundUser).isNotEmpty();
@@ -61,7 +61,7 @@ public class UserServiceTest extends MockTestBase {
     when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
 
     // when
-    Optional<UserEntity> foundUser = userService.findByEmail(email);
+    Optional<UserEntity> foundUser = userService.getByEmail(email);
 
     // then
     then(foundUser).isNotEmpty();
