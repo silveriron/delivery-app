@@ -25,9 +25,6 @@ public class TokenService implements TokenServiceIfs {
     @Override
     public String generateAccessToken(Long id) {
 
-        log.info("accessTokenExpirationSeconds: {}", accessTokenExpirationSeconds);
-
-
         var validity = Date.from(new Date().toInstant().plusSeconds(accessTokenExpirationSeconds));
 
         return generateToken(validity, id);

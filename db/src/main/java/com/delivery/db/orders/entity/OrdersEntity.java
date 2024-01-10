@@ -2,9 +2,12 @@ package com.delivery.db.orders.entity;
 
 import com.delivery.db.base.BaseEntity;
 import com.delivery.db.orders.enums.OrderStatus;
+import com.delivery.db.ordersmenu.entity.OrdersMenuEntity;
 import com.delivery.db.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity(name = "orders")
 @EqualsAndHashCode(callSuper = true)
@@ -22,4 +25,7 @@ public class OrdersEntity extends BaseEntity {
 
   @ManyToOne
   private UserEntity user;
+
+  @OneToMany(mappedBy = "orders")
+  private List<OrdersMenuEntity> ordersMenu;
 }
