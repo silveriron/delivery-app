@@ -19,7 +19,7 @@ public class MenuOpenApiController {
 
   @GetMapping("/stores/{id}")
   public List<MenuResponse> getMenusByStoreId(
-      @PathVariable Long id) {
+      @PathVariable(name = "id") Long id) {
     return menuBusiness.getMenusByStoreId(id);
   }
 }
